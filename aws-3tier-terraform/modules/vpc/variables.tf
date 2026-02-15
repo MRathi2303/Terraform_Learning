@@ -1,6 +1,6 @@
 variable "cidr" {
   description = "Initilise the cidr block for the vpc"
-  type = "string"
+  type = string
 }
 
 variable "public_subnet_cidrs" {

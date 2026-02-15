@@ -18,10 +18,10 @@ resource "aws_internet_gateway" "three_tier_igw" {
 ## public subnets (2 AZs)
 resource "aws_subnet" "public_subnet" {
     count = length(var.public_subnet_cidrs)
-    vpc_id = aws_vpc.three_tier_vpc
+    vpc_id = aws_vpc.three_tier_vpc.id
     cidr_block = var.public_subnet_cidrs[count.index]
     availability_zone = var.azs[count.index]
-    map_customer_owned_ip_on_launch = true
+    map_public_ip_on_launch = true
 
     tags = {
         Name : "3-tier-public-subnet-${count.index+1}"
@@ -34,13 +34,13 @@ resource "aws_subnet" "public_subnet" {
 
 resource "aws_subnet" "private_subnet" {
     count = length(var.private_subnet_cidrs)
-    vpc_id = aws_vpc.three_tier_vpc
+    vpc_id = aws_vpc.three_tier_vpc.id
     cidr_block = var.private_subnet_cidrs[count.index]
     availability_zone = var.azs[count.index]
 
     tags = {
         Name : "3-tier-private-subnet-${count.index+1}"
-        Tier : "Public"
+        Tier : "Private"
     }
 
 }
@@ -58,3 +58,5 @@ resource "aws_subnet" "private_db" {
     Tier = "private-db"
   }
 }
+
+
